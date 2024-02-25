@@ -71,6 +71,7 @@
       border-top: 1px solid #eee;
       position: fixed;
       bottom: 0px;
+      left: 0px;
       width: 100%;
       padding-block: 8px;
       text-align: center;

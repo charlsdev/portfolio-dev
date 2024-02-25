@@ -6,7 +6,7 @@
    import Experience from '@/components/Experience.svelte';
    import Education from '@/components/Education.svelte';
    import Projects from '@/components/Projects.svelte';
-   import Theme from '@/layout/Theme.svelte';
+   import Footer from '@/layout/Footer.svelte';
 
    const { image, summary, url, name } = basics;
 
@@ -43,7 +43,7 @@
    <Projects />
    <Skills />
 
-   <Theme />
+   <Footer />
 </main>
 
 <style>
