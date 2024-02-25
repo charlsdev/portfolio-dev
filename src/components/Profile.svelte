@@ -6,8 +6,9 @@
    import X from '@/icons/X.svelte';
    import Mail from '@/icons/Mail.svelte';
    import Phone from '@/icons/Phone.svelte';
+   import Translate from '@/icons/translate.svelte';
 
-   import { basics } from '@cv';
+   import { basics, languages } from '@cv';
    import type { SocialIcon } from '@/types';
 
    const { name, label, image, location, profiles, phone, email } = basics;
@@ -31,10 +32,19 @@
          <h1>{name}</h1>
          <h2>{label}</h2>
 
-         <span>
-            <WorldMap />
-            {city}, {region}
-         </span>
+         <div class="description">
+            <span>
+               <WorldMap />
+               {city}, {region}
+            </span>
+            <slice>•</slice>
+            <span>
+               <Translate />
+               {#each languages as { language, fluency }}
+                  {language} ({fluency})
+               {/each}
+            </span>
+         </div>
 
          <footer class="print">
             {printInfo}
@@ -95,6 +105,12 @@
       flex-direction: column;
       gap: 0.5rem;
       padding-right: 32px;
+   }
+
+   .description {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
    }
 
    h1 {
@@ -160,6 +176,14 @@
          align-items: center;
          padding-right: 0;
          text-align: center;
+      }
+
+      .description {
+         flex-direction: column;
+      }
+
+      .description slice {
+         display: none;
       }
 
       figure {

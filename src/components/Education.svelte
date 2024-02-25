@@ -3,7 +3,7 @@
    import Section from '@/layout/Section.svelte';
 </script>
 
-<Section title="Mis estudios">
+<Section title="Estudios">
    <ul>
       {#each education as { institution, startDate, endDate, area, studyType }}
          <li>

@@ -2,9 +2,11 @@
    import { basics } from '@cv';
    import Profile from '@/components/Profile.svelte';
    import Skills from '@/components/Skills.svelte';
-   import About from './components/About.svelte';
-   import Experience from './components/Experience.svelte';
-   import Education from './components/Education.svelte';
+   import About from '@/components/About.svelte';
+   import Experience from '@/components/Experience.svelte';
+   import Education from '@/components/Education.svelte';
+   import Projects from '@/components/Projects.svelte';
+   import Theme from '@/layout/Theme.svelte';
 
    const { image, summary, url, name } = basics;
 
@@ -38,7 +40,10 @@
    <About />
    <Experience />
    <Education />
+   <Projects />
    <Skills />
+
+   <Theme />
 </main>
 
 <style>
