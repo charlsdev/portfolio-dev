@@ -1,0 +1,136 @@
+{
+   "basics": {
+      "name": "Carlos A. Villacreses Parrales",
+      "label": "Full Stack Developer, con enfoque en Backend, sumo 5 años de experiencia profesional y laboral.",
+      "image": "/charlsdev.jpg",
+      "email": "*****@gmail.com",
+      "phone": "+593 99 999 9999",
+      "url": "https://charlsdev.xyz",
+      "summary": "Full Stack Developer, con enfoque en Backend, sumo 5 años de experiencia marcados por la innovación y el crecimiento constante. Mi pasión por la tecnología y el desarrollo de software me mueve a liderar con el ejemplo, fomentando el aprendizaje compartido y la excelencia en equipo. Busco desafíos que me permitan impulsar la transformación digital y aportar soluciones creativas.",
+      "location": {
+         "address": "",
+         "postalCode": "00000",
+         "city": "Jipijapa",
+         "countryCode": "ES",
+         "region": "Ecuador"
+      },
+      "profiles": [
+         {
+            "network": "LinkedIn",
+            "username": "charlsdev",
+            "url": "https://www.linkedin.com/in/charlsdev/"
+         },
+         {
+            "network": "X",
+            "username": "charlsdev",
+            "url": "https://twitter.com/carlosvillacre"
+         },
+         {
+            "network": "GitHub",
+            "username": "charlsdev",
+            "url": "https://github.com/charlsdev"
+         }
+      ]
+   },
+   "work": [
+      {
+         "name": "charlsdev",
+         "position": "Desarrollador Full Stack - Backend",
+         "url": "https://github.com/charlsdev",
+         "startDate": "2020-01-02",
+         "endDate": null,
+         "summary": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original.",
+         "highlights": []
+      }
+   ],
+   "education": [
+      {
+         "institution": "Universidad Estatal del Sur de Manabí (UNESUM)",
+         "url": null,
+         "area": "Magister en Tecnologías de la Información y Comunicación",
+         "studyType": "Cuarto Nivel",
+         "startDate": "2022-03-16",
+         "endDate": "2023-03-16"
+      }
+   ],
+   "projects": [
+      {
+         "name": "VLP Unesum",
+         "isActive": false,
+         "description": "Entorno virtual de aprendizaje tipo Classroom, hecho para obtener el título de Tercer Nivel en la Universidad",
+         "highlights": [
+            "NodeJS",
+            "Express",
+            "Mongoose",
+            "Handlebars",
+            "Authenticacion JWT",
+            "Passport",
+            "BcryptJS",
+            "Nodemailer",
+            "Multer",
+            "Pdf creator node",
+            "XLSX",
+            "Twilio",
+            "Multer",
+            "Node Cron",
+            "Axios"
+         ],
+         "github": "https://drive.google.com/file/d/1N11pM_CsSIXEJ9MN6_ZUmYcAvEO34f36/view?usp=sharing",
+         "url": "https://drive.google.com/file/d/1U6GNGbuZK6AlDQ8V5no1NOL2J7l8HdR_/view?usp=sharing"
+      }
+   ],
+   "skills": [
+      { "name": "HTML", "description": "HTML" },
+      { "name": "CSS", "description": "CSS" },
+      { "name": "JavaScript", "description": "JavaScript" },
+      { "name": "TypeScript", "description": "TypeScript" },
+      { "name": "Node", "description": "Node" },
+      { "name": "MySQL", "description": "MySQL" },
+      { "name": "PostgreSQL", "description": "PostgreSQL" },
+      { "name": "MongoDB", "description": "MongoDB" },
+      { "name": "Redis", "description": "Redis" },
+      { "name": "Docker", "description": "Docker" },
+      { "name": "Git", "description": "Git" },
+      { "name": "GitHub", "description": "GitHub" },
+      { "name": "React", "description": "React" },
+      { "name": "ReactQuery", "description": "React Query" },
+      { "name": "Tailwind", "description": "Tailwind" },
+      { "name": "NextJS", "description": "NextJS" },
+      { "name": "Prisma", "description": "Prisma" },
+      { "name": "GraphQL", "description": "GraphQL" },
+      { "name": "Hono", "description": "Hono" },
+      { "name": "Astro", "description": "Astro" },
+      { "name": "Svelte", "description": "Svelte" },
+      { "name": "Hana", "description": "Sap/Hana" },
+      { "name": "PHP", "description": "PHP" }
+   ],
+   "certificates": [
+      {
+         "name": "Certificate",
+         "date": "2021-11-07",
+         "issuer": "Company",
+         "url": "https://certificate.com"
+      }
+   ],
+   "publications": [
+      {
+         "name": "Publication",
+         "publisher": "Company",
+         "releaseDate": "2014-10-01",
+         "url": "https://publication.com",
+         "summary": "Description…"
+      }
+   ],
+   "languages": [
+      {
+         "language": "Español",
+         "fluency": "Nativo"
+      }
+   ],
+   "references": [
+      {
+         "name": "Jane Doe",
+         "reference": "Reference…"
+      }
+   ]
+}
