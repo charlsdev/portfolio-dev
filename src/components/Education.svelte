@@ -1,6 +1,7 @@
 <script lang="ts">
    import { education } from '@cv';
    import Section from '@/layout/Section.svelte';
+   import { transformDate } from '@/utils/transformDate';
 </script>
 
 <Section title="Estudios">
@@ -14,10 +15,8 @@
                   </div>
 
                   <time
-                     >{`${new Date(startDate).getFullYear()} - ${
-                        endDate != null
-                           ? new Date(endDate).getFullYear()
-                           : 'Actual'
+                     >{`${transformDate(startDate)} - ${
+                        endDate != null ? transformDate(endDate) : 'Actual'
                      }`}</time
                   >
                </header>
@@ -56,9 +55,10 @@
 
    time {
       color: #555;
-      font-size: 0.85rem;
-      min-width: 102px;
+      font-size: 0.775rem;
+      min-width: 120px;
       font-weight: 600;
+      text-align: end;
    }
 
    footer p {

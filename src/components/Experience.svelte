@@ -1,6 +1,7 @@
 <script lang="ts">
    import { work } from '@cv';
    import Section from '@/layout/Section.svelte';
+   import { transformDate } from '@/utils/transformDate';
 </script>
 
 <Section title="Experiencia laboral">
@@ -11,18 +12,20 @@
                <header>
                   <div>
                      <h3>
-                        <a href={url} title={`Ver ${name}`} target="_blank">
+                        {#if url}
+                           <a href={url} title={`Ver ${name}`} target="_blank">
+                              {name}
+                           </a>
+                        {:else}
                            {name}
-                        </a>
+                        {/if}
                      </h3>
                      <h4>{position}</h4>
                   </div>
 
                   <time
-                     >{`${new Date(startDate).getFullYear()} - ${
-                        endDate != null
-                           ? new Date(endDate).getFullYear()
-                           : 'Actual'
+                     >{`${transformDate(startDate)} - ${
+                        endDate != null ? `${transformDate(endDate)}` : 'Actual'
                      }`}</time
                   >
                </header>
@@ -30,13 +33,13 @@
                <footer>
                   <p>{summary}</p>
 
-                  <div>
-                     {#if highlights.length}
+                  {#if highlights.length}
+                     <div>
                         {#each highlights as skill}
                            <span>{skill}</span>
                         {/each}
-                     {/if}
-                  </div>
+                     </div>
+                  {/if}
                </footer>
             </article>
          </li>
@@ -48,7 +51,7 @@
    ul {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 38px;
    }
 
    article h3 {
@@ -67,6 +70,7 @@
    article h4 {
       color: #222;
       font-weight: 400;
+      font-size: 0.875rem;
    }
 
    header {
@@ -78,9 +82,10 @@
 
    time {
       color: #555;
-      font-size: 0.85rem;
-      min-width: 102px;
+      font-size: 0.775rem;
+      min-width: 150px;
       font-weight: 600;
+      text-align: end;
    }
 
    footer p {
