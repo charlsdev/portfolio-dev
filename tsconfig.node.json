@@ -1,12 +1,15 @@
 {
    "compilerOptions": {
-      "composite": true,
-      "skipLibCheck": true,
-      "module": "ESNext",
+      "module": "esnext",
       "moduleResolution": "bundler",
-      "strict": true
+      "target": "esnext",
+      "lib": ["esnext"],
+      "types": ["node"],
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "noEmit": true
    },
-   "include": [
-      "vite.config.ts"
-   ]
+   "include": ["drizzle.config.ts", "scripts/**/*.ts"]
 }
