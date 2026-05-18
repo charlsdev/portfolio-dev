@@ -1,5 +1,5 @@
 import { fail } from '@sveltejs/kit'
-import { createSkill, deleteSkill, listSkills, updateSkill } from '@/server/cv-repo'
+import { createSkill, deleteSkill, listSkills, reorderSkills, updateSkill } from '@/server/cv-repo'
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => ({ items: await listSkills() })
@@ -21,6 +21,12 @@ export const actions: Actions = {
    delete: async ({ request }) => {
       const f = await request.formData()
       await deleteSkill(Number(f.get('id')))
+      return { saved: true }
+   },
+   reorder: async ({ request }) => {
+      const f = await request.formData()
+      const ids = JSON.parse((f.get('ids') ?? '[]').toString()) as number[]
+      await reorderSkills(ids.map(Number))
       return { saved: true }
    },
 }

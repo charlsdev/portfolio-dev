@@ -74,7 +74,6 @@ export async function updateProfile(id: number, f: FormData) {
          network: str(f.get('network')),
          username: str(f.get('username')),
          url: str(f.get('url')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.profiles.id, id))
 }
@@ -99,7 +98,6 @@ export async function updateSkill(id: number, f: FormData) {
       .set({
          name: str(f.get('name')),
          description: str(f.get('description')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.skills.id, id))
 }
@@ -124,7 +122,6 @@ export async function updateLanguage(id: number, f: FormData) {
       .set({
          language: str(f.get('language')),
          fluency: str(f.get('fluency')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.languages.id, id))
 }
@@ -159,7 +156,6 @@ export async function updateEducation(id: number, f: FormData) {
          startDate: emptyToNull(f.get('startDate')),
          endDate: emptyToNull(f.get('endDate')),
          score: str(f.get('score')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.education.id, id))
 }
@@ -214,7 +210,6 @@ export async function updateWork(id: number, f: FormData) {
          startDate: emptyToNull(f.get('startDate')),
          endDate: emptyToNull(f.get('endDate')),
          summary: str(f.get('summary')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.work.id, id))
    await replaceWorkHighlights(id, linesToList(f.get('highlights')))
@@ -273,10 +268,73 @@ export async function updateProject(id: number, f: FormData) {
          description: str(f.get('description')),
          url: str(f.get('url')),
          github: emptyToNull(f.get('github')),
-         sortOrder: Number(f.get('sortOrder') ?? 0),
       })
       .where(eq(schema.projects.id, id))
    await replaceProjectHighlights(id, linesToList(f.get('highlights')))
 }
 export const deleteProject = (id: number) =>
    db.delete(schema.projects).where(eq(schema.projects.id, id))
+
+/* ---------- reorder (drag & drop) ---------- */
+// Persiste el nuevo orden: sort_order = índice en el array de ids.
+// Explícitas por tabla para mantener el tipado de drizzle.
+
+export const reorderProfiles = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.profiles)
+            .set({ sortOrder: i })
+            .where(eq(schema.profiles.id, ids[i]))
+      }
+   })
+
+export const reorderSkills = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.skills)
+            .set({ sortOrder: i })
+            .where(eq(schema.skills.id, ids[i]))
+      }
+   })
+
+export const reorderLanguages = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.languages)
+            .set({ sortOrder: i })
+            .where(eq(schema.languages.id, ids[i]))
+      }
+   })
+
+export const reorderEducation = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.education)
+            .set({ sortOrder: i })
+            .where(eq(schema.education.id, ids[i]))
+      }
+   })
+
+export const reorderWork = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.work)
+            .set({ sortOrder: i })
+            .where(eq(schema.work.id, ids[i]))
+      }
+   })
+
+export const reorderProjects = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++) {
+         await tx
+            .update(schema.projects)
+            .set({ sortOrder: i })
+            .where(eq(schema.projects.id, ids[i]))
+      }
+   })

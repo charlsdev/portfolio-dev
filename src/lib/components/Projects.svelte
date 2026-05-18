@@ -53,7 +53,12 @@
                         </a>
                      {/if}
                   </div>
-                  <p class="mt-2 text-sm leading-relaxed text-fg-secondary">{description}</p>
+                  <p
+                     class="mt-2 line-clamp-4 text-sm leading-relaxed text-fg-secondary"
+                     title={description}
+                  >
+                     {description}
+                  </p>
                </header>
 
                {#if highlights.length}

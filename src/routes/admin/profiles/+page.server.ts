@@ -1,5 +1,11 @@
 import { fail } from '@sveltejs/kit'
-import { createProfile, deleteProfile, listProfiles, updateProfile } from '@/server/cv-repo'
+import {
+   createProfile,
+   deleteProfile,
+   listProfiles,
+   reorderProfiles,
+   updateProfile,
+} from '@/server/cv-repo'
 import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => ({ items: await listProfiles() })
@@ -21,6 +27,12 @@ export const actions: Actions = {
    delete: async ({ request }) => {
       const f = await request.formData()
       await deleteProfile(Number(f.get('id')))
+      return { saved: true }
+   },
+   reorder: async ({ request }) => {
+      const f = await request.formData()
+      const ids = JSON.parse((f.get('ids') ?? '[]').toString()) as number[]
+      await reorderProfiles(ids.map(Number))
       return { saved: true }
    },
 }

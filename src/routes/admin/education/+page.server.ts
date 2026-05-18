@@ -3,6 +3,7 @@ import {
    createEducation,
    deleteEducation,
    listEducation,
+   reorderEducation,
    updateEducation,
 } from '@/server/cv-repo'
 import type { Actions, PageServerLoad } from './$types'
@@ -26,6 +27,12 @@ export const actions: Actions = {
    delete: async ({ request }) => {
       const f = await request.formData()
       await deleteEducation(Number(f.get('id')))
+      return { saved: true }
+   },
+   reorder: async ({ request }) => {
+      const f = await request.formData()
+      const ids = JSON.parse((f.get('ids') ?? '[]').toString()) as number[]
+      await reorderEducation(ids.map(Number))
       return { saved: true }
    },
 }

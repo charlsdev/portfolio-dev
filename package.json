@@ -37,6 +37,7 @@
       "@node-rs/argon2": "^2.0.2",
       "drizzle-orm": "^0.45.2",
       "postgres": "^3.4.9",
+      "svelte-dnd-action": "^0.9.69",
       "zod": "^3.24.1"
    },
    "pnpm": {
