@@ -3,7 +3,10 @@
 
 FROM node:24-alpine AS build
 WORKDIR /app
-RUN corepack enable
+# corepack no-interactivo + pnpm fijada (la misma que el lockfile / dev).
+# Sin el pin, corepack baja otra pnpm que aborta por "ignored build scripts".
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
