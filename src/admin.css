@@ -1,0 +1,196 @@
+/* Estilos del panel admin. CSS plano sobre los tokens de marca (definidos en
+   app.css). Cambian solos con light/dark porque usan las CSS vars semánticas.
+   Las clases coinciden con las que usan las páginas CRUD → reestilizado global. */
+
+.admin-h1 {
+   font-family: var(--font-display);
+   font-size: 1.6rem;
+   font-weight: 700;
+   letter-spacing: var(--tracking-tight);
+   color: var(--fg);
+   margin-bottom: 0.25rem;
+}
+.admin-lead {
+   color: var(--fg-secondary);
+   font-size: 0.9rem;
+   margin-bottom: 1.75rem;
+   max-width: 60ch;
+}
+
+.entity {
+   background: var(--surface);
+   border: 1px solid var(--line);
+   border-radius: var(--radius-lg);
+   padding: 1.35rem;
+   margin-bottom: 1rem;
+}
+.entity.new {
+   border-style: dashed;
+   background: color-mix(in srgb, var(--color-primary) 5%, var(--surface));
+   border-color: color-mix(in srgb, var(--color-primary) 35%, var(--line));
+}
+.entity h3 {
+   font-family: var(--font-display);
+   font-size: 0.95rem;
+   font-weight: 600;
+   color: var(--fg);
+   margin-bottom: 1rem;
+}
+
+.field {
+   display: flex;
+   flex-direction: column;
+   gap: 0.35rem;
+   margin-bottom: 0.9rem;
+}
+.field label {
+   font-size: 0.7rem;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.08em;
+   color: var(--fg-tertiary);
+}
+.field input,
+.field textarea {
+   padding: 0.55rem 0.7rem;
+   background: var(--bg);
+   border: 1px solid var(--line);
+   border-radius: var(--radius-md);
+   font-size: 0.9rem;
+   font-family: inherit;
+   color: var(--fg);
+   width: 100%;
+   transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+   color: var(--fg-tertiary);
+}
+.field input:focus,
+.field textarea:focus {
+   outline: none;
+   border-color: var(--color-primary);
+   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+.field textarea {
+   min-height: 74px;
+   resize: vertical;
+   font-family: var(--font-mono);
+   font-size: 0.82rem;
+}
+.field .hint {
+   font-size: 0.72rem;
+   color: var(--fg-tertiary);
+   font-family: var(--font-mono);
+}
+.grid-2 {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 0 0.85rem;
+}
+.checkbox {
+   flex-direction: row;
+   align-items: center;
+   gap: 0.5rem;
+}
+.checkbox input {
+   width: auto;
+   accent-color: var(--color-primary);
+}
+.checkbox label {
+   text-transform: none;
+   letter-spacing: 0;
+   font-size: 0.85rem;
+   color: var(--fg-secondary);
+}
+
+.actions {
+   display: flex;
+   gap: 0.6rem;
+   align-items: center;
+   margin-top: 0.6rem;
+}
+/* Base compartida: las 3 variantes lucen idénticas en caja, tamaño y
+   tipografía aunque se usen solas (ej. `btn-danger` sin `btn`). */
+.btn,
+.btn-secondary,
+.btn-danger {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   padding: 0.5rem 1.1rem;
+   border-radius: var(--radius-md);
+   border: 1px solid transparent;
+   font-size: 0.84rem;
+   font-weight: 600;
+   font-family: var(--font-sans);
+   line-height: 1.2;
+   cursor: pointer;
+   transition:
+      filter 0.15s ease,
+      transform 0.05s ease,
+      background 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+}
+.btn:active,
+.btn-secondary:active,
+.btn-danger:active {
+   transform: translateY(1px);
+}
+
+/* Primary (acción principal) */
+.btn {
+   background: var(--color-primary);
+   color: var(--color-ink);
+}
+.btn:hover {
+   filter: brightness(0.94);
+}
+
+/* Secondary (ghost con borde) */
+.btn-secondary {
+   background: transparent;
+   color: var(--fg);
+   border-color: var(--line-strong);
+}
+.btn-secondary:hover {
+   border-color: var(--color-primary);
+   color: var(--color-primary-deep);
+}
+
+/* Danger (destructivo) */
+.btn-danger {
+   background: transparent;
+   color: var(--color-error);
+   border-color: color-mix(in srgb, var(--color-error) 40%, transparent);
+}
+.btn-danger:hover {
+   background: var(--color-error-bg);
+   border-color: var(--color-error);
+}
+.flash {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   background: var(--color-success-bg);
+   color: var(--color-success);
+   font-size: 0.84rem;
+   font-weight: 500;
+   padding: 0.6rem 0.9rem;
+   border-radius: var(--radius-md);
+   border: 1px solid color-mix(in srgb, var(--color-success) 25%, transparent);
+   margin-bottom: 1rem;
+}
+.flash-error {
+   background: var(--color-error-bg);
+   color: var(--color-error);
+   border-color: color-mix(in srgb, var(--color-error) 25%, transparent);
+}
+.muted {
+   color: var(--fg-tertiary);
+   font-size: 0.88rem;
+   font-style: italic;
+}

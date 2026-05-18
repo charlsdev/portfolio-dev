@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Logo geométrico minimalista </> -->
+  <!-- Bracket izquierdo < -->
+  <path d="M 70 60 L 40 100 L 70 140"
+        stroke="#F5B544"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <!-- Slash central / -->
+  <path d="M 115 55 L 85 145"
+        stroke="#F5B544"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <!-- Bracket derecho > -->
+  <path d="M 130 60 L 160 100 L 130 140"
+        stroke="#F5B544"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
