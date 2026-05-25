@@ -105,3 +105,68 @@ export const languages = pgTable('languages', {
    fluency: text('fluency').notNull().default(''),
    sortOrder: integer('sort_order').notNull().default(0),
 })
+
+// Cursos / capacitaciones
+export const courses = pgTable('courses', {
+   id: serial('id').primaryKey(),
+   title: text('title').notNull(),
+   institution: text('institution').notNull().default(''),
+   hours: text('hours').notNull().default(''),
+   location: text('location').notNull().default(''),
+   startDate: date('start_date'),
+   endDate: date('end_date'),
+   sortOrder: integer('sort_order').notNull().default(0),
+})
+
+// Ponencias (fechas como texto libre: "25 al 26 de abril del 2019")
+export const talks = pgTable('talks', {
+   id: serial('id').primaryKey(),
+   title: text('title').notNull(),
+   institution: text('institution').notNull().default(''),
+   congress: text('congress').notNull().default(''),
+   location: text('location').notNull().default(''),
+   dates: text('dates').notNull().default(''),
+   sortOrder: integer('sort_order').notNull().default(0),
+})
+
+// Publicaciones
+export const publications = pgTable('publications', {
+   id: serial('id').primaryKey(),
+   title: text('title').notNull(),
+   institution: text('institution').notNull().default(''),
+   coauthors: text('coauthors').notNull().default(''),
+   journal: text('journal').notNull().default(''),
+   year: integer('year'),
+   sortOrder: integer('sort_order').notNull().default(0),
+})
+
+// Méritos y distinciones (endYear puede ser null)
+export const awards = pgTable('awards', {
+   id: serial('id').primaryKey(),
+   title: text('title').notNull(),
+   institution: text('institution').notNull().default(''),
+   startYear: integer('start_year'),
+   endYear: integer('end_year'),
+   sortOrder: integer('sort_order').notNull().default(0),
+})
+
+// Investigaciones (authors: si no hay, el investigador principal)
+export const research = pgTable('research', {
+   id: serial('id').primaryKey(),
+   title: text('title').notNull(),
+   institution: text('institution').notNull().default(''),
+   authors: text('authors').notNull().default(''),
+   startYear: integer('start_year'),
+   endYear: integer('end_year'),
+   sortOrder: integer('sort_order').notNull().default(0),
+})
+
+// Configuración de secciones del portfolio: orden y si aparece en modo "Dev".
+// `key` es estable (about, experience, ...); las filas las siembra seedSections().
+export const sections = pgTable('sections', {
+   id: serial('id').primaryKey(),
+   key: text('key').notNull().unique(),
+   label: text('label').notNull(),
+   sortOrder: integer('sort_order').notNull().default(0),
+   inDev: boolean('in_dev').notNull().default(true),
+})

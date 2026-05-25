@@ -153,6 +153,27 @@
    color: var(--color-primary);
 }
 
+/* ---- Badges de valor (Institución, Revista, años) ---- */
+.vbadge {
+   display: inline-flex;
+   align-items: center;
+   border-radius: var(--radius-md);
+   padding: 0.1rem 0.5rem;
+   font-size: 0.72rem;
+   font-weight: 500;
+   line-height: 1.45;
+}
+.vbadge-amber {
+   background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+   color: var(--color-primary-deep);
+}
+[data-theme='dark'] .vbadge-amber {
+   color: var(--color-primary);
+}
+.vbadge-mono {
+   font-family: var(--font-mono);
+}
+
 /* ---- Print ---- */
 .print {
    display: none !important;
@@ -169,8 +190,5 @@
    }
    .print {
       display: block !important;
-   }
-   article {
-      break-inside: avoid;
    }
 }

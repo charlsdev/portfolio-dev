@@ -1,4 +1,5 @@
 <script lang="ts">
+   let { mode = 'dev' }: { mode?: 'dev' | 'completo' } = $props();
    const year = new Date().getFullYear();
 </script>
 
@@ -12,12 +13,12 @@
    </div>
 
    <a
-      href="/cv"
+      href={`/cv?mode=${mode}`}
       class="inline-flex items-center gap-2 rounded-md border border-line px-3 py-1.5
              font-mono text-xs text-fg-secondary transition-colors
              hover:border-primary hover:text-primary"
       aria-label="Ver CV para descargar en PDF"
-      title="Abrir CV imprimible / guardar como PDF"
+      title="Abrir CV imprimible / guardar como PDF ({mode})"
    >
       <svg
          width="15"

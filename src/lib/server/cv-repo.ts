@@ -15,6 +15,12 @@ const linesToList = (v: FormDataEntryValue | null): string[] =>
       .split('\n')
       .map((l) => l.trim())
       .filter(Boolean)
+const intOrNull = (v: FormDataEntryValue | null): number | null => {
+   const s = str(v)
+   if (s === '') return null
+   const n = Number(s)
+   return Number.isFinite(n) ? Math.trunc(n) : null
+}
 
 async function nextSort(sortCol: PgColumn): Promise<number> {
    const [r] = await db
@@ -337,4 +343,185 @@ export const reorderProjects = (ids: number[]) =>
             .set({ sortOrder: i })
             .where(eq(schema.projects.id, ids[i]))
       }
+   })
+
+/* ---------- courses (cursos / capacitaciones) ---------- */
+
+export const listCourses = () =>
+   db.select().from(schema.courses).orderBy(asc(schema.courses.sortOrder))
+
+export async function createCourse(f: FormData) {
+   await db.insert(schema.courses).values({
+      title: str(f.get('title')),
+      institution: str(f.get('institution')),
+      hours: str(f.get('hours')),
+      location: str(f.get('location')),
+      startDate: emptyToNull(f.get('startDate')),
+      endDate: emptyToNull(f.get('endDate')),
+      sortOrder: await nextSort(schema.courses.sortOrder),
+   })
+}
+export async function updateCourse(id: number, f: FormData) {
+   await db
+      .update(schema.courses)
+      .set({
+         title: str(f.get('title')),
+         institution: str(f.get('institution')),
+         hours: str(f.get('hours')),
+         location: str(f.get('location')),
+         startDate: emptyToNull(f.get('startDate')),
+         endDate: emptyToNull(f.get('endDate')),
+      })
+      .where(eq(schema.courses.id, id))
+}
+export const deleteCourse = (id: number) =>
+   db.delete(schema.courses).where(eq(schema.courses.id, id))
+export const reorderCourses = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++)
+         await tx.update(schema.courses).set({ sortOrder: i }).where(eq(schema.courses.id, ids[i]))
+   })
+
+/* ---------- talks (ponencias) ---------- */
+
+export const listTalks = () =>
+   db.select().from(schema.talks).orderBy(asc(schema.talks.sortOrder))
+
+export async function createTalk(f: FormData) {
+   await db.insert(schema.talks).values({
+      title: str(f.get('title')),
+      institution: str(f.get('institution')),
+      congress: str(f.get('congress')),
+      location: str(f.get('location')),
+      dates: str(f.get('dates')),
+      sortOrder: await nextSort(schema.talks.sortOrder),
+   })
+}
+export async function updateTalk(id: number, f: FormData) {
+   await db
+      .update(schema.talks)
+      .set({
+         title: str(f.get('title')),
+         institution: str(f.get('institution')),
+         congress: str(f.get('congress')),
+         location: str(f.get('location')),
+         dates: str(f.get('dates')),
+      })
+      .where(eq(schema.talks.id, id))
+}
+export const deleteTalk = (id: number) =>
+   db.delete(schema.talks).where(eq(schema.talks.id, id))
+export const reorderTalks = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++)
+         await tx.update(schema.talks).set({ sortOrder: i }).where(eq(schema.talks.id, ids[i]))
+   })
+
+/* ---------- publications (publicaciones) ---------- */
+
+export const listPublications = () =>
+   db.select().from(schema.publications).orderBy(asc(schema.publications.sortOrder))
+
+export async function createPublication(f: FormData) {
+   await db.insert(schema.publications).values({
+      title: str(f.get('title')),
+      institution: str(f.get('institution')),
+      coauthors: str(f.get('coauthors')),
+      journal: str(f.get('journal')),
+      year: intOrNull(f.get('year')),
+      sortOrder: await nextSort(schema.publications.sortOrder),
+   })
+}
+export async function updatePublication(id: number, f: FormData) {
+   await db
+      .update(schema.publications)
+      .set({
+         title: str(f.get('title')),
+         institution: str(f.get('institution')),
+         coauthors: str(f.get('coauthors')),
+         journal: str(f.get('journal')),
+         year: intOrNull(f.get('year')),
+      })
+      .where(eq(schema.publications.id, id))
+}
+export const deletePublication = (id: number) =>
+   db.delete(schema.publications).where(eq(schema.publications.id, id))
+export const reorderPublications = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++)
+         await tx
+            .update(schema.publications)
+            .set({ sortOrder: i })
+            .where(eq(schema.publications.id, ids[i]))
+   })
+
+/* ---------- awards (méritos y distinciones) ---------- */
+
+export const listAwards = () =>
+   db.select().from(schema.awards).orderBy(asc(schema.awards.sortOrder))
+
+export async function createAward(f: FormData) {
+   await db.insert(schema.awards).values({
+      title: str(f.get('title')),
+      institution: str(f.get('institution')),
+      startYear: intOrNull(f.get('startYear')),
+      endYear: intOrNull(f.get('endYear')),
+      sortOrder: await nextSort(schema.awards.sortOrder),
+   })
+}
+export async function updateAward(id: number, f: FormData) {
+   await db
+      .update(schema.awards)
+      .set({
+         title: str(f.get('title')),
+         institution: str(f.get('institution')),
+         startYear: intOrNull(f.get('startYear')),
+         endYear: intOrNull(f.get('endYear')),
+      })
+      .where(eq(schema.awards.id, id))
+}
+export const deleteAward = (id: number) =>
+   db.delete(schema.awards).where(eq(schema.awards.id, id))
+export const reorderAwards = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++)
+         await tx.update(schema.awards).set({ sortOrder: i }).where(eq(schema.awards.id, ids[i]))
+   })
+
+/* ---------- research (investigaciones) ---------- */
+
+export const listResearch = () =>
+   db.select().from(schema.research).orderBy(asc(schema.research.sortOrder))
+
+export async function createResearch(f: FormData) {
+   await db.insert(schema.research).values({
+      title: str(f.get('title')),
+      institution: str(f.get('institution')),
+      authors: str(f.get('authors')),
+      startYear: intOrNull(f.get('startYear')),
+      endYear: intOrNull(f.get('endYear')),
+      sortOrder: await nextSort(schema.research.sortOrder),
+   })
+}
+export async function updateResearch(id: number, f: FormData) {
+   await db
+      .update(schema.research)
+      .set({
+         title: str(f.get('title')),
+         institution: str(f.get('institution')),
+         authors: str(f.get('authors')),
+         startYear: intOrNull(f.get('startYear')),
+         endYear: intOrNull(f.get('endYear')),
+      })
+      .where(eq(schema.research.id, id))
+}
+export const deleteResearch = (id: number) =>
+   db.delete(schema.research).where(eq(schema.research.id, id))
+export const reorderResearch = (ids: number[]) =>
+   db.transaction(async (tx) => {
+      for (let i = 0; i < ids.length; i++)
+         await tx
+            .update(schema.research)
+            .set({ sortOrder: i })
+            .where(eq(schema.research.id, ids[i]))
    })

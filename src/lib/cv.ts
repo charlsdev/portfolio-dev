@@ -1,16 +1,15 @@
 export interface Root {
    basics: Basics
    work: Work[]
-   volunteer: Volunteer[]
    education: Education[]
-   awards: Award[]
-   certificates: Certificate[]
-   publications: Publication[]
+   projects: Project[]
    skills: Skill[]
    languages: Language[]
-   interests: Interest[]
-   references: Reference[]
-   projects: Project[]
+   courses: Course[]
+   talks: Talk[]
+   publications: Publication[]
+   research: Research[]
+   awards: Award[]
 }
 
 export interface Basics {
@@ -49,16 +48,6 @@ export interface Work {
    highlights: string[]
 }
 
-export interface Volunteer {
-   organization: string
-   position: string
-   url: string
-   startDate: string
-   endDate: string
-   summary: string
-   highlights: string[]
-}
-
 export interface Education {
    institution: string
    url: string
@@ -70,64 +59,14 @@ export interface Education {
    courses: string[]
 }
 
-export interface Award {
-   title: string
-   date: string
-   awarder: string
-   summary: string
-}
-
-export interface Certificate {
-   name: string
-   date: string
-   issuer: string
-   url: string
-}
-
-export interface Publication {
-   name: string
-   publisher: string
-   releaseDate: string
-   url: string
-   summary: string
-}
-
 export interface Skill {
    name: string
    description: string
 }
 
-type Languages =
-   | 'Spanish'
-   | 'English'
-   | 'German'
-   | 'France'
-   | 'Italian'
-   | 'Korean'
-   | 'Portuguese'
-   | 'Chinese'
-   | 'Arabic'
-   | 'Dutch'
-   | 'Finnish'
-   | 'Russian'
-   | 'Turkish'
-   | 'Hindi'
-   | 'Bengali'
-   | string
-
 export interface Language {
-   language: Languages
+   language: string
    fluency: string
-}
-
-export interface Interest {
-   name: string
-   keywords: string[]
-}
-
-export interface Reference {
-   name: string
-   reference: string
 }
 
 export interface Project {
@@ -137,4 +76,46 @@ export interface Project {
    highlights: string[]
    url: string
    github?: string
+}
+
+/* ---- Secciones académicas ---- */
+
+export interface Course {
+   title: string
+   institution: string
+   hours: string
+   location: string
+   startDate: string | null
+   endDate: string | null
+}
+
+export interface Talk {
+   title: string
+   institution: string
+   congress: string
+   location: string
+   dates: string
+}
+
+export interface Publication {
+   title: string
+   institution: string
+   coauthors: string
+   journal: string
+   year: number | null
+}
+
+export interface Award {
+   title: string
+   institution: string
+   startYear: number | null
+   endYear: number | null
+}
+
+export interface Research {
+   title: string
+   institution: string
+   authors: string
+   startYear: number | null
+   endYear: number | null
 }

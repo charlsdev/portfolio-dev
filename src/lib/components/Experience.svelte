@@ -3,10 +3,11 @@
    import Section from '@/layout/Section.svelte';
    import { transformDate } from '@/utils/transformDate';
 
+   let { index = '' }: { index?: string } = $props();
    const { work } = getCv();
 </script>
 
-<Section title="Experiencia" index="02">
+<Section title="Experiencia" {index}>
    <ol class="relative ml-1 border-l border-line">
       {#each work as { name, startDate, endDate, position, summary, highlights, url }}
          <li class="relative ml-6 pb-10 last:pb-0">

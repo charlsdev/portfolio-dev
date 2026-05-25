@@ -52,20 +52,22 @@
       PHP,
    };
 
+   let { index = '' }: { index?: string } = $props();
    const { skills } = getCv();
 </script>
 
-<Section title="Habilidades" index="05">
+<Section title="Habilidades" {index}>
    <ul class="flex flex-wrap gap-2">
       {#each skills as { name, description }}
+         {@const Icon = SKILLS_ICONS[name]}
          <li
             class="flex items-center gap-2 rounded-md border border-line bg-surface
                    px-3 py-1.5 text-sm font-medium text-fg-secondary transition-colors
                    hover:border-primary hover:text-fg"
          >
-            {#if SKILLS_ICONS[name]}
+            {#if Icon}
                <span class="grid size-4 place-items-center [&_svg]:size-4">
-                  <svelte:component this={SKILLS_ICONS[name]} />
+                  <Icon />
                </span>
             {/if}
             <span class="font-mono text-xs">{description}</span>

@@ -9,11 +9,17 @@
 
    const nav = [
       { href: '/admin', label: 'Inicio' },
+      { href: '/admin/sections', label: 'Secciones' },
       { href: '/admin/basics', label: 'Datos básicos' },
       { href: '/admin/profiles', label: 'Redes' },
       { href: '/admin/work', label: 'Experiencia' },
       { href: '/admin/education', label: 'Estudios' },
       { href: '/admin/projects', label: 'Proyectos' },
+      { href: '/admin/courses', label: 'Cursos' },
+      { href: '/admin/talks', label: 'Ponencias' },
+      { href: '/admin/publications', label: 'Publicaciones' },
+      { href: '/admin/research', label: 'Investigaciones' },
+      { href: '/admin/awards', label: 'Méritos' },
       { href: '/admin/skills', label: 'Habilidades' },
       { href: '/admin/languages', label: 'Idiomas' },
       { href: '/admin/users', label: 'Usuarios' },

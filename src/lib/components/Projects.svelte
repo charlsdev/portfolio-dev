@@ -3,10 +3,11 @@
    import Section from '@/layout/Section.svelte';
    import GitHub from '@/icons/git-hub.svelte';
 
+   let { index = '' }: { index?: string } = $props();
    const { projects } = getCv();
 </script>
 
-<Section title="Proyectos" index="04">
+<Section title="Proyectos" {index}>
    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {#each projects as { name, description, isActive, github, highlights, url }}
          <li>

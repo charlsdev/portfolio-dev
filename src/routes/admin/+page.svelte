@@ -4,11 +4,17 @@
    let { data }: { data: PageData } = $props()
 
    const cards = $derived([
+      { href: '/admin/sections', label: 'Secciones · orden', n: null },
       { href: '/admin/basics', label: 'Datos básicos', n: null },
       { href: '/admin/profiles', label: 'Redes', n: data.counts.profiles },
       { href: '/admin/work', label: 'Experiencia', n: data.counts.work },
       { href: '/admin/education', label: 'Estudios', n: data.counts.education },
       { href: '/admin/projects', label: 'Proyectos', n: data.counts.projects },
+      { href: '/admin/courses', label: 'Cursos', n: data.counts.courses },
+      { href: '/admin/talks', label: 'Ponencias', n: data.counts.talks },
+      { href: '/admin/publications', label: 'Publicaciones', n: data.counts.publications },
+      { href: '/admin/research', label: 'Investigaciones', n: data.counts.research },
+      { href: '/admin/awards', label: 'Méritos', n: data.counts.awards },
       { href: '/admin/skills', label: 'Habilidades', n: data.counts.skills },
       { href: '/admin/languages', label: 'Idiomas', n: data.counts.languages },
    ])

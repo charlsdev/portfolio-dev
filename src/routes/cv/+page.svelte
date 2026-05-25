@@ -16,12 +16,10 @@
       ].filter(Boolean),
    )
 
-   const today = new Intl.DateTimeFormat('es', {
-      month: 'long',
-      year: 'numeric',
-   }).format(new Date())
+   const today = new Intl.DateTimeFormat('es', { month: 'long', year: 'numeric' }).format(
+      new Date(),
+   )
 
-   // En un CV impreso una URL cruda larga no aporta y desborda: mostrar dominio.
    const host = (u?: string) => {
       if (!u) return ''
       try {
@@ -30,8 +28,51 @@
          return u.replace(/^https?:\/\//, '').split('/')[0]
       }
    }
+   const cdate = (s: string | null) => (s ? transformDate(s) : '')
+   const crange = (s: string | null, e: string | null) => {
+      const a = cdate(s)
+      const b2 = cdate(e)
+      return a && b2 ? `${a} — ${b2}` : a || b2
+   }
+   const years = (s: number | null, e: number | null) => {
+      if (s != null && e != null) return s === e ? `${s}` : `${s} – ${e}`
+      return s != null ? `${s}` : e != null ? `${e}` : ''
+   }
 
-   // Llega desde "Descargar PDF": abre el diálogo cuando las fuentes están listas
+   const hasData = (key: string): boolean => {
+      switch (key) {
+         case 'about':
+            return !!b.summary?.trim()
+         case 'experience':
+            return cv.work.length > 0
+         case 'education':
+            return cv.education.length > 0
+         case 'projects':
+            return cv.projects.length > 0
+         case 'courses':
+            return cv.courses.length > 0
+         case 'talks':
+            return cv.talks.length > 0
+         case 'publications':
+            return cv.publications.length > 0
+         case 'research':
+            return cv.research.length > 0
+         case 'awards':
+            return cv.awards.length > 0
+         case 'skills':
+            return cv.skills.length > 0
+         default:
+            return false
+      }
+   }
+
+   const visible = $derived(
+      data.sections.filter(
+         (s) => (data.mode === 'completo' || s.inDev) && hasData(s.key),
+      ),
+   )
+   const pad = (n: number) => String(n).padStart(2, '0')
+
    onMount(async () => {
       try {
          await document.fonts?.ready
@@ -41,20 +82,21 @@
 </script>
 
 <svelte:head>
-   <title>CV — {b.name}</title>
+   <title>CV{data.mode === 'completo' ? ' (completo)' : ''} — {b.name}</title>
    <meta name="robots" content="noindex" />
 </svelte:head>
 
 <div class="backdrop">
    <div class="toolbar no-print">
       <a href="/" class="tbtn ghost">← Volver al sitio</a>
-      <button type="button" class="tbtn" onclick={() => window.print()}>
-         Guardar como PDF
-      </button>
+      <a href="/cv?mode=dev" class="tbtn ghost" class:active={data.mode === 'dev'}>Dev</a>
+      <a href="/cv?mode=completo" class="tbtn ghost" class:active={data.mode === 'completo'}>
+         Completo
+      </a>
+      <button type="button" class="tbtn" onclick={() => window.print()}>Guardar como PDF</button>
    </div>
 
    <article class="sheet">
-      <!-- HEADER -->
       <header class="head">
          <div class="head-main">
             <p class="eyebrow">Curriculum Vitae</p>
@@ -71,116 +113,230 @@
                </ul>
             {/if}
          </div>
-         {#if b.image}
-            <img class="photo" src={b.image} alt={b.name} />
-         {/if}
+         {#if b.image}<img class="photo" src={b.image} alt={b.name} />{/if}
       </header>
 
-      {#if b.summary}
-         <section class="block">
-            <h2><span class="num">01</span> Perfil</h2>
-            <p class="summary">{b.summary}</p>
-         </section>
-      {/if}
-
-      {#if cv.work?.length}
-         <section class="block">
-            <h2><span class="num">02</span> Experiencia</h2>
-            <ol class="timeline">
-               {#each cv.work as w}
-                  <li>
-                     <span class="dot" aria-hidden="true"></span>
-                     <div class="t-head">
-                        <span class="t-title">{w.name}</span>
-                        <span class="dates">
-                           {transformDate(w.startDate)} — {w.endDate != null
-                              ? transformDate(w.endDate)
-                              : 'Actual'}
-                        </span>
-                     </div>
-                     {#if w.position}<p class="t-sub">{w.position}</p>{/if}
-                     {#if w.summary}<p class="desc">{w.summary}</p>{/if}
-                     {#if w.highlights?.length}
-                        <ul class="tags">
-                           {#each w.highlights as h}<li>{h}</li>{/each}
-                        </ul>
-                     {/if}
-                  </li>
-               {/each}
-            </ol>
-         </section>
-      {/if}
-
-      {#if cv.projects?.length}
-         <section class="block">
-            <h2><span class="num">03</span> Proyectos</h2>
-            <div class="proj-grid">
-               {#each cv.projects as pr}
-                  <div class="proj">
-                     <div class="proj-head">
-                        <span class="proj-name">{pr.name}</span>
-                        {#if pr.url}
-                           <span class="proj-url">{host(pr.url)}</span>
-                        {/if}
-                     </div>
-                     {#if pr.description}<p class="desc">{pr.description}</p>{/if}
-                     {#if pr.highlights?.length}
-                        <p class="proj-tech">{pr.highlights.join(' · ')}</p>
-                     {/if}
-                  </div>
-               {/each}
-            </div>
-         </section>
-      {/if}
-
-      {#if cv.education?.length}
-         <section class="block">
-            <h2><span class="num">04</span> Estudios</h2>
-            <ol class="timeline">
-               {#each cv.education as e}
-                  <li>
-                     <span class="dot" aria-hidden="true"></span>
-                     <div class="t-head">
-                        <span class="t-title">{e.area}</span>
-                        <span class="dates">
-                           {transformDate(e.startDate)} — {e.endDate != null
-                              ? transformDate(e.endDate)
-                              : 'Actual'}
-                        </span>
-                     </div>
-                     <p class="t-sub">
-                        {e.institution}{#if e.studyType} · {e.studyType}{/if}
-                     </p>
-                  </li>
-               {/each}
-            </ol>
-         </section>
-      {/if}
-
-      <div class="two-col">
-         {#if cv.skills?.length}
-            <section class="block">
-               <h2><span class="num">05</span> Habilidades</h2>
-               <ul class="chips">
-                  {#each cv.skills as s}<li>{s.description || s.name}</li>{/each}
-               </ul>
-            </section>
+      {#each visible as s, i (s.key)}
+         {@const num = pad(i + 1)}
+         {#if s.key === 'about'}{@render secAbout(num)}
+         {:else if s.key === 'experience'}{@render secExp(num)}
+         {:else if s.key === 'education'}{@render secEdu(num)}
+         {:else if s.key === 'projects'}{@render secProj(num)}
+         {:else if s.key === 'courses'}{@render secCourses(num)}
+         {:else if s.key === 'talks'}{@render secTalks(num)}
+         {:else if s.key === 'publications'}{@render secPubs(num)}
+         {:else if s.key === 'research'}{@render secResearch(num)}
+         {:else if s.key === 'awards'}{@render secAwards(num)}
+         {:else if s.key === 'skills'}{@render secSkills(num)}
          {/if}
-         {#if cv.languages?.length}
-            <section class="block">
-               <h2><span class="num">06</span> Idiomas</h2>
-               <ul class="chips">
-                  {#each cv.languages as l}<li>{l.language} · {l.fluency}</li>{/each}
-               </ul>
-            </section>
-         {/if}
-      </div>
+      {/each}
+
+      {#if cv.languages?.length}{@render secLanguages(pad(visible.length + 1))}{/if}
 
       <footer class="doc-foot">
          {b.url?.replace(/^https?:\/\//, '') || 'charlsdev'} · Actualizado {today}
       </footer>
    </article>
 </div>
+
+{#snippet secAbout(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Perfil</h2>
+      <p class="summary">{b.summary}</p>
+   </section>
+{/snippet}
+
+{#snippet secExp(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Experiencia</h2>
+      <ol class="timeline">
+         {#each cv.work as w}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{w.name}</span>
+                  <span class="dates">
+                     {transformDate(w.startDate)} — {w.endDate != null
+                        ? transformDate(w.endDate)
+                        : 'Actual'}
+                  </span>
+               </div>
+               {#if w.position}<p class="t-sub">{w.position}</p>{/if}
+               {#if w.summary}<p class="desc">{w.summary}</p>{/if}
+               {#if w.highlights?.length}
+                  <ul class="tags">
+                     {#each w.highlights as h}<li>{h}</li>{/each}
+                  </ul>
+               {/if}
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secEdu(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Estudios</h2>
+      <ol class="timeline">
+         {#each cv.education as e}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{e.area}</span>
+                  <span class="dates">
+                     {transformDate(e.startDate)} — {e.endDate != null
+                        ? transformDate(e.endDate)
+                        : 'Actual'}
+                  </span>
+               </div>
+               <p class="t-sub">
+                  {e.institution}{#if e.studyType} · {e.studyType}{/if}
+               </p>
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secProj(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Proyectos</h2>
+      <div class="proj-grid">
+         {#each cv.projects as pr}
+            <div class="proj">
+               <div class="proj-head">
+                  <span class="proj-name">{pr.name}</span>
+                  {#if pr.url}<span class="proj-url">{host(pr.url)}</span>{/if}
+               </div>
+               {#if pr.description}<p class="desc">{pr.description}</p>{/if}
+               {#if pr.highlights?.length}
+                  <p class="proj-tech">{pr.highlights.join(' · ')}</p>
+               {/if}
+            </div>
+         {/each}
+      </div>
+   </section>
+{/snippet}
+
+{#snippet secCourses(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Cursos y capacitaciones</h2>
+      <ol class="timeline">
+         {#each cv.courses as c}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{c.title}</span>
+                  {#if crange(c.startDate, c.endDate)}
+                     <span class="dates">{crange(c.startDate, c.endDate)}</span>
+                  {/if}
+               </div>
+               <p class="t-sub">
+                  {[c.institution, c.hours, c.location].filter(Boolean).join(' · ')}
+               </p>
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secTalks(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Ponencias</h2>
+      <ol class="timeline">
+         {#each cv.talks as t}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{t.title}</span>
+                  {#if t.dates}<span class="dates">{t.dates}</span>{/if}
+               </div>
+               <p class="t-sub">
+                  {[t.congress, t.institution, t.location].filter(Boolean).join(' · ')}
+               </p>
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secPubs(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Publicaciones</h2>
+      <ol class="timeline">
+         {#each cv.publications as p}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{p.title}</span>
+                  {#if p.year}<span class="dates">{p.year}</span>{/if}
+               </div>
+               <p class="t-sub">
+                  {[p.journal, p.coauthors, p.institution].filter(Boolean).join(' · ')}
+               </p>
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secResearch(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Investigaciones</h2>
+      <ol class="timeline">
+         {#each cv.research as r}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{r.title}</span>
+                  {#if years(r.startYear, r.endYear)}
+                     <span class="dates">{years(r.startYear, r.endYear)}</span>
+                  {/if}
+               </div>
+               <p class="t-sub">{[r.authors, r.institution].filter(Boolean).join(' · ')}</p>
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secAwards(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Méritos y distinciones</h2>
+      <ol class="timeline">
+         {#each cv.awards as a}
+            <li>
+               <span class="dot" aria-hidden="true"></span>
+               <div class="t-head">
+                  <span class="t-title">{a.title}</span>
+                  {#if years(a.startYear, a.endYear)}
+                     <span class="dates">{years(a.startYear, a.endYear)}</span>
+                  {/if}
+               </div>
+               {#if a.institution}<p class="t-sub">{a.institution}</p>{/if}
+            </li>
+         {/each}
+      </ol>
+   </section>
+{/snippet}
+
+{#snippet secSkills(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Habilidades</h2>
+      <ul class="chips">
+         {#each cv.skills as s}<li>{s.description || s.name}</li>{/each}
+      </ul>
+   </section>
+{/snippet}
+
+{#snippet secLanguages(num: string)}
+   <section class="block">
+      <h2><span class="num">{num}</span> Idiomas</h2>
+      <ul class="chips">
+         {#each cv.languages as l}<li>{l.language} · {l.fluency}</li>{/each}
+      </ul>
+   </section>
+{/snippet}
 
 <style>
    :global(html[data-theme]) {
@@ -221,6 +377,10 @@
       border-color: #b9b9b2;
       color: #4a4a4f;
    }
+   .tbtn.ghost.active {
+      border-color: #f5b544;
+      color: #c8893a;
+   }
 
    .sheet {
       width: 100%;
@@ -236,7 +396,6 @@
       overflow-wrap: anywhere;
    }
 
-   /* HEADER */
    .head {
       display: flex;
       justify-content: space-between;
@@ -310,10 +469,10 @@
       flex-shrink: 0;
    }
 
-   /* SECTIONS */
+   /* La sección puede continuar en la página siguiente (evita huecos al pie).
+      Los ítems individuales sí se mantienen enteros (.timeline > li / .proj). */
    .block {
       margin-bottom: 1.5rem;
-      break-inside: avoid;
    }
    .block h2 {
       font-family: var(--font-sans);
@@ -339,7 +498,6 @@
       color: #1a1a1c;
    }
 
-   /* TIMELINE */
    .timeline {
       list-style: none;
       position: relative;
@@ -412,7 +570,6 @@
       padding: 1px 6px;
    }
 
-   /* PROJECTS */
    .proj-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -465,12 +622,6 @@
       line-height: 1.5;
    }
 
-   /* CHIPS */
-   .two-col {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 1.5rem;
-   }
    .chips {
       list-style: none;
       display: flex;

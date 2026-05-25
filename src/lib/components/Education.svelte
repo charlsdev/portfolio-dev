@@ -3,10 +3,11 @@
    import Section from '@/layout/Section.svelte';
    import { transformDate } from '@/utils/transformDate';
 
+   let { index = '' }: { index?: string } = $props();
    const { education } = getCv();
 </script>
 
-<Section title="Estudios" index="03">
+<Section title="Estudios" {index}>
    <ul class="flex flex-col gap-4">
       {#each education as { institution, startDate, endDate, area, studyType }}
          <li

@@ -2,8 +2,8 @@ import { asc } from 'drizzle-orm'
 import type { Root } from '@/cv'
 import { db, schema } from './db'
 
-// Arma el objeto `Root` (esquema JSON Resume que consumen los componentes)
-// desde Postgres. Único punto de lectura: los componentes usan getCv().
+// Arma el objeto `Root` (consumido por los componentes vía getCv()) desde
+// Postgres. Único punto de lectura.
 export async function loadCv(): Promise<Root> {
    const [
       basicsRows,
@@ -15,6 +15,11 @@ export async function loadCv(): Promise<Root> {
       projectHl,
       skillsRows,
       languagesRows,
+      coursesRows,
+      talksRows,
+      publicationsRows,
+      researchRows,
+      awardsRows,
    ] = await Promise.all([
       db.select().from(schema.basics).limit(1),
       db.select().from(schema.profiles).orderBy(asc(schema.profiles.sortOrder)),
@@ -28,6 +33,11 @@ export async function loadCv(): Promise<Root> {
          .orderBy(asc(schema.projectHighlights.sortOrder)),
       db.select().from(schema.skills).orderBy(asc(schema.skills.sortOrder)),
       db.select().from(schema.languages).orderBy(asc(schema.languages.sortOrder)),
+      db.select().from(schema.courses).orderBy(asc(schema.courses.sortOrder)),
+      db.select().from(schema.talks).orderBy(asc(schema.talks.sortOrder)),
+      db.select().from(schema.publications).orderBy(asc(schema.publications.sortOrder)),
+      db.select().from(schema.research).orderBy(asc(schema.research.sortOrder)),
+      db.select().from(schema.awards).orderBy(asc(schema.awards.sortOrder)),
    ])
 
    const b = basicsRows[0]
@@ -99,12 +109,40 @@ export async function loadCv(): Promise<Root> {
          language: l.language,
          fluency: l.fluency,
       })),
-      // Secciones del esquema JSON Resume que el sitio aún no renderiza.
-      volunteer: [],
-      awards: [],
-      certificates: [],
-      publications: [],
-      interests: [],
-      references: [],
+      courses: coursesRows.map((c) => ({
+         title: c.title,
+         institution: c.institution,
+         hours: c.hours,
+         location: c.location,
+         startDate: c.startDate,
+         endDate: c.endDate,
+      })),
+      talks: talksRows.map((t) => ({
+         title: t.title,
+         institution: t.institution,
+         congress: t.congress,
+         location: t.location,
+         dates: t.dates,
+      })),
+      publications: publicationsRows.map((p) => ({
+         title: p.title,
+         institution: p.institution,
+         coauthors: p.coauthors,
+         journal: p.journal,
+         year: p.year,
+      })),
+      research: researchRows.map((r) => ({
+         title: r.title,
+         institution: r.institution,
+         authors: r.authors,
+         startYear: r.startYear,
+         endYear: r.endYear,
+      })),
+      awards: awardsRows.map((a) => ({
+         title: a.title,
+         institution: a.institution,
+         startYear: a.startYear,
+         endYear: a.endYear,
+      })),
    }
 }
