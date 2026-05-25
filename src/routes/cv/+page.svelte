@@ -462,10 +462,11 @@
       margin-right: 0.35rem;
    }
    .photo {
-      width: 92px;
-      height: 92px;
+      width: 84px;
+      aspect-ratio: 3 / 4;
       object-fit: cover;
-      border-radius: 10px;
+      object-position: top;
+      border-radius: 8px;
       flex-shrink: 0;
    }
 

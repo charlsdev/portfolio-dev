@@ -96,7 +96,7 @@
          <img
             src={image}
             alt={name}
-            class="size-32 rounded-xl object-cover ring-1 ring-line md:size-40"
+            class="aspect-[3/4] w-44 rounded-2xl object-cover object-top md:w-56"
          />
       </figure>
    </div>

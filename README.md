@@ -1,7 +1,7 @@
 <div align="center">
    <img src="./static/logo_primary.svg" height="80" width="auto" alt="charlsdev" />
    <h2><em>Portafolio</em> dinámico — SvelteKit + PostgreSQL</h2>
-   <p>SSR · panel admin · light/dark · export a PDF · esquema <a href="https://jsonresume.org/schema/">JSON Resume</a> (diseño base de <a href="https://github.com/midudev/minimalist-portfolio-json">midudev</a>)</p>
+   <p>SSR · panel admin · light/dark · export a PDF · esquema</p>
 </div>
 
 Portafolio personal: el CV vive en **PostgreSQL** y se edita desde `/admin`
