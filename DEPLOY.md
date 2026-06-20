@@ -12,19 +12,23 @@ Las tablas se crean/actualizan con **drizzle-kit push** (NO hay migraciones
 generadas; el schema TS en `src/lib/server/db/schema.ts` es la fuente de verdad):
 
 ```bash
-pnpm exec tsx scripts/db-create.ts   # crea la base 'portfolio' si no existe
-pnpm db:push                         # crea/sincroniza tablas (incl. users)
-pnpm db:seed                         # carga inicial: src/cv.json si existe, si no cv.example.json
-pnpm user:create <cedula> "<nombres y apellidos>" <password>  # imprime el INSERT del 1er usuario
+pnpm exec tsx scripts/db-create.ts            # crea la base 'portfolio' si no existe
+pnpm db:push                                  # crea/sincroniza tablas (incl. users + sections)
+pnpm db:seed                                  # carga inicial del CV (cv.json o cv.example.json)
+pnpm exec tsx scripts/seed-sections.ts        # siembra la config de secciones (idempotente)
+pnpm user:create <cedula> "<nombres>" <pass>  # imprime el INSERT del 1er usuario
 ```
 
 El login es contra la tabla `users` (cédula + contraseña argon2id). No hay
 credenciales en env. El primer usuario se crea corriendo el `INSERT` que
-imprime `user:create`; el resto se gestiona desde `/admin/users`.
+imprime `user:create`; el resto se gestiona desde `/admin/users`. La config
+de secciones (orden + flag Dev/Completo) se gestiona desde `/admin/sections`.
 
-`db:push` y `db:seed` se corren **una vez** (localmente o en un one-off),
-apuntando a la misma DB de producción. El contenedor de runtime NO los corre
-(tsx/drizzle-kit son devDependencies).
+`db:push`, `db:seed` y `seed-sections` se corren **una vez** (localmente o en
+un one-off), apuntando a la misma DB de producción. El contenedor de runtime
+NO los corre (tsx/drizzle-kit son devDependencies). `seed-sections` también
+se auto-ejecuta al abrir `/admin/sections`, así que si se olvida en el deploy
+inicial, la primera visita lo resuelve.
 
 ## Variables de entorno (runtime, en Dokploy)
 
