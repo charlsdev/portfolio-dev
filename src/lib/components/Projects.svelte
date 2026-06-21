@@ -5,11 +5,15 @@
 
    let { index = '' }: { index?: string } = $props();
    const { projects } = getCv();
+
+   // Estado de expansión por tarjeta: clave = índice.
+   let expanded = $state<Record<number, boolean>>({});
+   const toggle = (i: number) => (expanded[i] = !expanded[i]);
 </script>
 
 <Section title="Proyectos" {index}>
    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {#each projects as { name, description, isActive, github, highlights, url }}
+      {#each projects as { name, description, isActive, github, highlights, url }, i}
          <li>
             <article
                class="group flex h-full flex-col gap-4 rounded-lg border border-line
@@ -55,11 +59,22 @@
                      {/if}
                   </div>
                   <p
-                     class="mt-2 line-clamp-4 text-sm leading-relaxed text-fg-secondary"
+                     class="mt-2 text-sm leading-relaxed text-fg-secondary"
+                     class:line-clamp-4={!expanded[i]}
                      title={description}
                   >
                      {description}
                   </p>
+                  {#if description.length > 180}
+                     <button
+                        type="button"
+                        onclick={() => toggle(i)}
+                        class="mt-2 font-mono text-xs text-primary-deep
+                               transition-colors hover:underline dark:text-primary"
+                     >
+                        {expanded[i] ? 'Ver menos ↑' : 'Ver más ↓'}
+                     </button>
+                  {/if}
                </header>
 
                {#if highlights.length}
